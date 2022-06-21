@@ -13,12 +13,12 @@ import java.util.List;
 @RequestMapping("/document")
 public class DocumentController {
 
-    private IDocumentService documentService;
+    private IDocumentService documentServiceQuerydslImp;
 
     @GetMapping
     public ResponseEntity<List<DocumentDto>> getDocuments(@RequestParam(required = false) String key){
 
-        List<DocumentDto> documentDtoList = (key == null) ? documentService.getDocuments() : documentService.getByTitleKeyWord(key);
+        List<DocumentDto> documentDtoList = (key == null) ? documentServiceQuerydslImp.getDocuments() : documentServiceQuerydslImp.getByTitleKeyWord(key);
 
         return ResponseEntity.ok(documentDtoList);
 
@@ -27,7 +27,7 @@ public class DocumentController {
     @GetMapping("/{id}")
     public ResponseEntity<DocumentDto> getDocumentById(@PathVariable Long id){
 
-        DocumentDto documentDto = documentService.getById(id);;
+        DocumentDto documentDto = documentServiceQuerydslImp.getById(id);;
 
         return ResponseEntity.ok(documentDto);
 

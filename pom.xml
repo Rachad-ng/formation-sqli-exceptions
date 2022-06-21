@@ -25,7 +25,11 @@
     <properties>
         <java.version>1.8</java.version>
         <lombok.version>1.18.22</lombok.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <querydsl.version>5.0.0</querydsl.version>
+        <project.parent.version>2.7.0</project.parent.version>
     </properties>
+
 
     <!-- =============================================================== -->
     <!-- Dependencies -->
@@ -98,7 +102,7 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.4.2.Final</version>
+            <version>${mapstruct.version}</version>
         </dependency>
 
         <!-- =============================================================== -->
@@ -109,6 +113,32 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
+        </dependency>
+
+        <!-- =============================================================== -->
+        <!-- QueryDsl dependencies -->
+        <!-- =============================================================== -->
+
+        <!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-core -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-core</artifactId>
+            <version>${querydsl.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-apt -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>${querydsl.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>${querydsl.version}</version>
         </dependency>
 
     </dependencies>
@@ -156,6 +186,23 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>1.1.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/java</outputDirectory>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
