@@ -8,6 +8,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -18,6 +19,13 @@ public class DocumentDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private JPAQueryFactory jpaQueryFactory;
+
+    @PostConstruct
+    private void postConstruct(){
+        jpaQueryFactory = new JPAQueryFactory(entityManager);
+    }
 
     public List<Document> findAll(){
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
