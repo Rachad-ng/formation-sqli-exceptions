@@ -4,7 +4,7 @@ import com.negra.formationsqliexceptions.dto.DocumentDto;
 import com.negra.formationsqliexceptions.exception.AucunDocumentTrouveException;
 import com.negra.formationsqliexceptions.exception.DocumentInexistantException;
 import com.negra.formationsqliexceptions.exception.ListeDocumentsVideException;
-import com.negra.formationsqliexceptions.mapper.IDocumentDtoMapper;
+import com.negra.formationsqliexceptions.mapper.IDocumentDtoMapStructMapper;
 import com.negra.formationsqliexceptions.model.Document;
 import com.negra.formationsqliexceptions.repository.DocumentRepository;
 import com.negra.formationsqliexceptions.service.specification.IDocumentService;
@@ -27,7 +27,7 @@ public class DocumentServiceJpaRepositoryImp implements IDocumentService {
     private static final String AUCUN_DOCUMENT_TROUVE_EXCEPTION_MESSAGE = "Aucun document correspondant à votre recherche.!!";
 
     private DocumentRepository documentRepository;
-    private IDocumentDtoMapper documentDtoMapper;
+    private IDocumentDtoMapStructMapper documentDtoMapper;
 
     @Override
     public List<DocumentDto> getDocuments() throws ListeDocumentsVideException {

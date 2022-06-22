@@ -28,6 +28,7 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <querydsl.version>5.0.0</querydsl.version>
         <project.parent.version>2.7.0</project.parent.version>
+        <selma.version>1.0</selma.version>
     </properties>
 
 
@@ -141,6 +142,26 @@
             <version>${querydsl.version}</version>
         </dependency>
 
+
+        <!-- =============================================================== -->
+        <!-- Selma mapper dependencies -->
+        <!-- =============================================================== -->
+
+        <!-- scope provided because the processor is only needed at compile time-->
+        <dependency>
+            <groupId>fr.xebia.extras</groupId>
+            <artifactId>selma-processor</artifactId>
+            <version>${selma.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- This is the only real dependency you will have in your binaries -->
+        <dependency>
+            <groupId>fr.xebia.extras</groupId>
+            <artifactId>selma</artifactId>
+            <version>${selma.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -160,6 +181,7 @@
                 </configuration>
             </plugin>
 
+            <!-- MapStruct & lombook conflict handler pluging -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -188,6 +210,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Querydsl pluging -->
             <plugin>
                 <groupId>com.mysema.maven</groupId>
                 <artifactId>apt-maven-plugin</artifactId>
@@ -203,6 +226,38 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Selma Mapper & lombook conflict handler pluging -->
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <defaultOutputDirectory>
+                        ${project.build.directory}/generated-sources/selma
+                    </defaultOutputDirectory>
+                    <processors>
+                        <processor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor</processor>
+                        <processor>fr.xebia.extras.selma.codegen.MapperProcessor</processor>
+                    </processors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>fr.xebia.extras</groupId>
+                        <artifactId>selma-processor</artifactId>
+                        <version>0.15</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
         </plugins>

@@ -4,7 +4,7 @@ import com.negra.formationsqliexceptions.dto.DocumentDto;
 import com.negra.formationsqliexceptions.exception.AucunDocumentTrouveException;
 import com.negra.formationsqliexceptions.exception.DocumentInexistantException;
 import com.negra.formationsqliexceptions.exception.ListeDocumentsVideException;
-import com.negra.formationsqliexceptions.mapper.IDocumentDtoMapper;
+import com.negra.formationsqliexceptions.mapper.IDocumentDtoSelmaMapper;
 import com.negra.formationsqliexceptions.model.Document;
 import com.negra.formationsqliexceptions.repository.DocumentDao;
 import com.negra.formationsqliexceptions.service.specification.IDocumentService;
@@ -27,7 +27,7 @@ public class DocumentServiceQuerydslImp implements IDocumentService {
     private static final String AUCUN_DOCUMENT_TROUVE_EXCEPTION_MESSAGE = "Aucun document correspondant à votre recherche.!!";
 
     private DocumentDao documentDao;
-    private IDocumentDtoMapper documentDtoMapper;
+    private IDocumentDtoSelmaMapper documentDtoSelmaMapper;
 
     @Override
     public List<DocumentDto> getDocuments() throws ListeDocumentsVideException {
@@ -36,7 +36,7 @@ public class DocumentServiceQuerydslImp implements IDocumentService {
         if(documentList.size() == 0)
             throw new ListeDocumentsVideException(LISTE_DOCUMENTS_VIDE_EXCEPTION_MESSAGE);
 
-        return documentDtoMapper.documentToDocumentDto(documentList);
+        return documentDtoSelmaMapper.documentToDocumentDto(documentList);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class DocumentServiceQuerydslImp implements IDocumentService {
         Optional<Document> optionalDocument = documentDao.findById(id);
 
         if(optionalDocument.isPresent())
-            return documentDtoMapper.documentToDocumentDto(optionalDocument.get());
+            return documentDtoSelmaMapper.documentToDocumentDto(optionalDocument.get());
         else
             throw new DocumentInexistantException(DOCUMENT_INEXISTANT_EXCEPTION_MESSAGE);
     }
@@ -57,6 +57,6 @@ public class DocumentServiceQuerydslImp implements IDocumentService {
         if(documentList.size() == 0)
             throw new AucunDocumentTrouveException(AUCUN_DOCUMENT_TROUVE_EXCEPTION_MESSAGE);
 
-        return documentDtoMapper.documentToDocumentDto(documentList);
+        return documentDtoSelmaMapper.documentToDocumentDto(documentList);
     }
 }
