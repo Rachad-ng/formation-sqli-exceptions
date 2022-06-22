@@ -46,18 +46,16 @@ public class DocumentDao {
     }
 
     public List<Document> findAllOrderByTitle(){
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
         QDocument qDocument = QDocument.document;
-        return queryFactory.selectFrom(qDocument).orderBy(qDocument.titre.asc()).fetch();
+        return jpaQueryFactory.selectFrom(qDocument).orderBy(qDocument.titre.asc()).fetch();
     }
 
     public List<Tuple> findAllGroupByTitle(){
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
         QDocument qDocument = QDocument.document;
 
         NumberPath<Long> count = Expressions.numberPath(Long.class, "c");
 
-        return queryFactory.select(qDocument.titre, qDocument.count().as(count))
+        return jpaQueryFactory.select(qDocument.titre, qDocument.count().as(count))
                 .from(qDocument)
                 .groupBy(qDocument.titre)
                 .orderBy(count.desc())
