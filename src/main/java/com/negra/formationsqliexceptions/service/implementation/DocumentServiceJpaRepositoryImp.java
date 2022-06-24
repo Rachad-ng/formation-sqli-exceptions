@@ -1,6 +1,7 @@
 package com.negra.formationsqliexceptions.service.implementation;
 
 import com.negra.formationsqliexceptions.dto.DocumentDto;
+import com.negra.formationsqliexceptions.dto.DocumentDtoWithoutId;
 import com.negra.formationsqliexceptions.exception.AucunDocumentTrouveException;
 import com.negra.formationsqliexceptions.exception.DocumentInexistantException;
 import com.negra.formationsqliexceptions.exception.ListeDocumentsVideException;
@@ -61,5 +62,17 @@ public class DocumentServiceJpaRepositoryImp implements IDocumentService {
             throw new AucunDocumentTrouveException(AUCUN_DOCUMENT_TROUVE_EXCEPTION_MESSAGE);
 
         return documentDtoMapper.documentToDocumentDto(documentList);
+    }
+
+    @Override
+    public DocumentDto save(DocumentDtoWithoutId documentDtoWithoutId) {
+         Document document = documentDtoMapper.documentDtoWithoutIdToDocument(documentDtoWithoutId);
+         documentRepository.save(document);
+         return documentDtoMapper.documentToDocumentDto(document);
+    }
+
+    @Override
+    public DocumentDto update(DocumentDto documentDto) {
+        return null;
     }
 }

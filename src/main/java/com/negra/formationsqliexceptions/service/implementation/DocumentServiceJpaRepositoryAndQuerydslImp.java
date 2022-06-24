@@ -8,7 +8,7 @@ import com.negra.formationsqliexceptions.exception.ListeDocumentsVideException;
 import com.negra.formationsqliexceptions.mapper.IDocumentDtoSelmaMapper;
 import com.negra.formationsqliexceptions.mapper.IDocumentDtoWithoutIdSelmaMapper;
 import com.negra.formationsqliexceptions.model.Document;
-import com.negra.formationsqliexceptions.repository.DocumentDao;
+import com.negra.formationsqliexceptions.repository.DocumentDaoJpaRepositoryAndQuerydslPredicateExecutorImp;
 import com.negra.formationsqliexceptions.service.specification.IDocumentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,19 +19,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Qualifier("documentServiceQuerydslImp")
+@Qualifier("documentServiceJpaRepositoryAndQuerydslImp")
 @Transactional
 @AllArgsConstructor
-public class DocumentServiceQuerydslImp implements IDocumentService {
+public class DocumentServiceJpaRepositoryAndQuerydslImp implements IDocumentService {
 
     private static final String LISTE_DOCUMENTS_VIDE_EXCEPTION_MESSAGE = "La liste des documents est vide.!!";
     private static final String DOCUMENT_INEXISTANT_EXCEPTION_MESSAGE = "Le document que vous cherchiez n'existe plus.!!";
     private static final String AUCUN_DOCUMENT_TROUVE_EXCEPTION_MESSAGE = "Aucun document correspondant à votre recherche.!!";
 
-    private DocumentDao documentDao;
+    private DocumentDaoJpaRepositoryAndQuerydslPredicateExecutorImp documentDao;
     private IDocumentDtoSelmaMapper documentDtoSelmaMapper;
 
-    private IDocumentDtoWithoutIdSelmaMapper documentDtoWithoutIdSelmaMapper;
+    private IDocumentDtoWithoutIdSelmaMapper documentDtoWithoutIdToDocument;
 
     @Override
     public List<DocumentDto> getDocuments() throws ListeDocumentsVideException {
@@ -56,7 +56,7 @@ public class DocumentServiceQuerydslImp implements IDocumentService {
 
     @Override
     public List<DocumentDto> getByTitleKeyWord(String keyWord) throws AucunDocumentTrouveException {
-        List<Document> documentList = documentDao.findByKeyWord(keyWord);
+        List<Document> documentList = documentDao.findDocumentByTitreContaining(keyWord);
 
         if(documentList.size() == 0)
             throw new AucunDocumentTrouveException(AUCUN_DOCUMENT_TROUVE_EXCEPTION_MESSAGE);
@@ -64,17 +64,14 @@ public class DocumentServiceQuerydslImp implements IDocumentService {
         return documentDtoSelmaMapper.documentToDocumentDto(documentList);
     }
 
-    @Override
-    public DocumentDto save(DocumentDtoWithoutId documentDtoWithoutId) {
-        Document document = documentDtoWithoutIdSelmaMapper.documentDtoWithoutIdToDocument(documentDtoWithoutId);
+    public DocumentDto save(DocumentDtoWithoutId documentDtoWithoutId){
+        Document document = documentDtoWithoutIdToDocument.documentDtoWithoutIdToDocument(documentDtoWithoutId);
         documentDao.save(document);
         return documentDtoSelmaMapper.documentToDocumentDto(document);
     }
 
     @Override
     public DocumentDto update(DocumentDto documentDto) {
-        Document document = documentDtoSelmaMapper.documentDtoToDocument(documentDto);
-        documentDao.update(document);
-        return documentDto;
+        return null;
     }
 }

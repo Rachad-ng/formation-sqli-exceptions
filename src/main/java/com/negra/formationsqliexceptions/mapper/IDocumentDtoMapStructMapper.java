@@ -1,6 +1,7 @@
 package com.negra.formationsqliexceptions.mapper;
 
 import com.negra.formationsqliexceptions.dto.DocumentDto;
+import com.negra.formationsqliexceptions.dto.DocumentDtoWithoutId;
 import com.negra.formationsqliexceptions.model.Document;
 import org.mapstruct.Mapper;
 
@@ -13,5 +14,7 @@ public interface IDocumentDtoMapStructMapper {
     DocumentDto documentToDocumentDto(Document document);
 
     List<DocumentDto> documentToDocumentDto(Collection<Document> documentCollection);
+
+    Document documentDtoWithoutIdToDocument(DocumentDtoWithoutId documentDtoWithoutId);
 
 }
